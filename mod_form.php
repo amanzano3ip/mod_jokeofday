@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -26,15 +25,22 @@
 defined('MOODLE_INTERNAL') || die;
 
 global $CFG;
-require_once ($CFG->dirroot.'/course/moodleform_mod.php');
+require_once($CFG->dirroot.'/course/moodleform_mod.php');
 
+/**
+ * Class mod_jokeofday_mod_form
+ *
+ * @package    mod_jokeofday
+ * @copyright  2024 Tresipunt {@link http://www.tresipunt.com}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class mod_jokeofday_mod_form extends moodleform_mod {
 
     /**
      * Definition.
      *
      */
-    function definition() {
+    public function definition() {
         global $PAGE;
 
         $PAGE->force_settings_menu();
@@ -48,9 +54,12 @@ class mod_jokeofday_mod_form extends moodleform_mod {
                 'text',
                 'name',
                 get_string('name', 'jokeofday'),
-                array('size' => '64'));
+                ['size' => '64']);
 
         $this->standard_intro_elements('Descripción');
+
+        $mform->addElement('text', 'numjokes',
+                get_string('numjokes', 'jokeofday'), ['size' => '10']);
 
         // Label does not add "Show description" checkbox meaning that 'intro' is always shown on the course page.
         $mform->addElement('hidden', 'showdescription', 1);

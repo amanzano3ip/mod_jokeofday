@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -27,9 +26,14 @@ defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
 
-    $settings->add(new admin_setting_configtext('jokeofday/test',
-        'test',
-            'descripción',
-            '', PARAM_TEXT));
+    $settings->add(new admin_setting_configtext('jokeofday/url',
+        get_string('url', 'mod_jokeofday'),
+            get_string('url_desc', 'mod_jokeofday'),
+            'https://v2.jokeapi.dev/joke', PARAM_URL));
+
+    $settings->add(new admin_setting_configduration('jokeofday/timeout',
+        get_string('timeout', 'mod_jokeofday'),
+            get_string('timeout_desc', 'mod_jokeofday'),
+            10));
 
 }

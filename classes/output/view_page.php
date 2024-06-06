@@ -14,22 +14,38 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace mod_jokeofday\output;
+use mod_jokeofday\requests\api;
+use renderable;
+use templatable;
+use renderer_base;
+use stdClass;
+
 /**
- * Strings for component 'jokeofday', language 'en'
+ * Class view_page
  *
  * @package    mod_jokeofday
- * @copyright  2024 Tresipunt {@link http://www.tresipunt.com}
+ * @copyright  Tresipunt {@link http://www.tresipunt.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+class view_page implements renderable, templatable {
 
-$string['modulename'] = 'Joke of Day';
-$string['modulename_help'] = 'Ayuda del plugin';
-$string['modulenameplural'] = 'Jokes of Day';
-$string['name'] = 'Nombre de la actividad';
-$string['pluginadministration'] = 'Joke of Day Administration';
-$string['pluginname'] = 'Joke of Day';
-$string['url'] = 'API URL';
-$string['url_desc'] = 'URL para realizar las peticiones a la API de chistes';
-$string['timeout'] = 'Timeout';
-$string['timeout_desc'] = 'Tiempo de espera máximo de la petición';
-$string['numjokes'] = 'Número de chistes';
+    /**
+     * Export for Template.
+     *
+     * @param renderer_base $output
+     * @return stdClass
+     */
+    public function export_for_template(renderer_base $output) {
+
+        $data = new stdClass();
+
+        $api = new api();
+        $data->jokes = $api->get_jokes();
+        return $data;
+
+    }
+
+
+
+}

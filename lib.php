@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -25,31 +24,28 @@
 
 use mod_jokeofday\models\jokeofday;
 
-defined('MOODLE_INTERNAL') || die;
-
 /**
  * Given an object containing all the necessary data,
  * (defined by the form in mod_form.php) this function
  * will create a new instance and return the id number
  * of the new instance.
  *
- * @global object
  * @param object $jokeofday
  * @return bool|int
+ * @throws dml_exception
  */
 function jokeofday_add_instance($jokeofday) {
     return jokeofday::insert($jokeofday);
 }
-
 
 /**
  * Given an object containing all the necessary data,
  * (defined by the form in mod_form.php) this function
  * will update an existing instance with new data.
  *
- * @global object
  * @param object $jokeofday
  * @return bool
+ * @throws dml_exception
  */
 function jokeofday_update_instance($jokeofday) {
     return jokeofday::update($jokeofday);
@@ -60,15 +56,17 @@ function jokeofday_update_instance($jokeofday) {
  * this function will permanently delete the instance
  * and any data that depends on it.
  *
- * @global object
  * @param int $id
  * @return bool
+ * @throws dml_exception
  */
 function jokeofday_delete_instance($id) {
     return jokeofday::delete($id);
 }
 
 /**
+ * Supports of JokeOfDay module
+ *
  * @uses FEATURE_IDNUMBER
  * @uses FEATURE_GROUPS
  * @uses FEATURE_GROUPINGS
@@ -81,18 +79,22 @@ function jokeofday_delete_instance($id) {
  */
 function jokeofday_supports($feature) {
     switch($feature) {
-        case FEATURE_IDNUMBER:                return true;
-        case FEATURE_GROUPS:                  return false;
-        case FEATURE_GROUPINGS:               return false;
-        case FEATURE_MOD_INTRO:               return true;
-        case FEATURE_COMPLETION_TRACKS_VIEWS: return false;
-        case FEATURE_GRADE_HAS_GRADE:         return false;
-        case FEATURE_GRADE_OUTCOMES:          return false;
-        case FEATURE_MOD_ARCHETYPE:           return MOD_ARCHETYPE_ASSIGNMENT;
-        case FEATURE_BACKUP_MOODLE2:          return false;
-        case FEATURE_NO_VIEW_LINK:            return false;
-        case FEATURE_MOD_PURPOSE:             return MOD_PURPOSE_COMMUNICATION;
-
-        default: return null;
+        case FEATURE_MOD_INTRO:
+        case FEATURE_IDNUMBER:
+            return true;
+        case FEATURE_GROUPINGS:
+        case FEATURE_COMPLETION_TRACKS_VIEWS:
+        case FEATURE_GRADE_HAS_GRADE:
+        case FEATURE_GRADE_OUTCOMES:
+        case FEATURE_BACKUP_MOODLE2:
+        case FEATURE_NO_VIEW_LINK:
+        case FEATURE_GROUPS:
+            return false;
+        case FEATURE_MOD_ARCHETYPE:
+            return MOD_ARCHETYPE_ASSIGNMENT;
+        case FEATURE_MOD_PURPOSE:
+            return MOD_PURPOSE_COMMUNICATION;
+        default:
+            return null;
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,19 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library of functions and constants for module label
+ * Library of functions and constants for module jokeofday
  *
- * @package mod_label
- * @copyright  2003 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @package    mod_jokeofday
+ * @copyright  2024 Tresipunt {@link http://www.tresipunt.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once("../../config.php");
 require_once("lib.php");
 
-$id = required_param('id',PARAM_INT);   // course
+require_login();
 
-$PAGE->set_url('/mod/label/index.php', array('id'=>$id));
+$id = required_param('id', PARAM_INT);
+
+$PAGE->set_url('/mod/label/index.php', ['id' => $id]);
 
 redirect("$CFG->wwwroot/course/view.php?id=$id");
 

@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -24,11 +23,35 @@
  */
 
 require_once("../../config.php");
-
-require_login();
-
+global $PAGE, $OUTPUT;
 
 
-echo "EStas dentro de la actividad Jokeofday VIEW";
+$cmid = required_param('id', PARAM_INT);
+
+list($course, $cm) = get_course_and_cm_from_cmid($cmid);
+
+/** @var cm_info $cminfo */
+$cminfo = $cm;
+
+require_login($course);
+$contextmodule = context_module::instance($cminfo->id);
+
+$PAGE->set_url(new moodle_url('/mod/jokeofday/view.php'));
+$PAGE->set_context($contextmodule);
+$PAGE->set_title($cminfo->get_name());
+$PAGE->set_heading($cminfo->get_name());
+$PAGE->set_pagelayout('incourse');
+
+echo $OUTPUT->header();
+
+$renderer = $PAGE->get_renderer('mod_jokeofday');
+$page = new \mod_jokeofday\output\view_page();
+echo $renderer->render($page);
+
+echo $OUTPUT->footer();
+
+
+
+
 
 

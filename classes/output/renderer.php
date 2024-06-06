@@ -14,22 +14,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace mod_jokeofday\output;
+
+use moodle_exception;
+use plugin_renderer_base;
+
 /**
- * Strings for component 'jokeofday', language 'en'
+ * Renderer for JokeOfDay
  *
  * @package    mod_jokeofday
  * @copyright  2024 Tresipunt {@link http://www.tresipunt.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+class renderer extends plugin_renderer_base {
 
-$string['modulename'] = 'Joke of Day';
-$string['modulename_help'] = 'Ayuda del plugin';
-$string['modulenameplural'] = 'Jokes of Day';
-$string['name'] = 'Nombre de la actividad';
-$string['pluginadministration'] = 'Joke of Day Administration';
-$string['pluginname'] = 'Joke of Day';
-$string['url'] = 'API URL';
-$string['url_desc'] = 'URL para realizar las peticiones a la API de chistes';
-$string['timeout'] = 'Timeout';
-$string['timeout_desc'] = 'Tiempo de espera máximo de la petición';
-$string['numjokes'] = 'Número de chistes';
+    /**
+     * Render view_page
+     *
+     * @param view_page $page
+     * @return bool|string
+     * @throws moodle_exception
+     */
+    public function render_view_page(view_page $page): bool|string {
+        $data = $page->export_for_template($this);
+        return parent::render_from_template("mod_jokeofday/view_page", $data);
+    }
+
+}

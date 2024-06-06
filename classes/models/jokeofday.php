@@ -23,12 +23,13 @@ use stdClass;
 /**
  * jokeofday
  *
- * @package    local_whoisip
+ * @package    mod_jokeofday
  * @copyright  Tresipunt {@link http://www.tresipunt.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class jokeofday {
 
+    /** @var string Table Jokeofday */
     const TABLE = 'jokeofday';
 
     /**
@@ -69,14 +70,14 @@ class jokeofday {
         global $DB;
 
         if (! $jokeofday = $DB->get_record(self::TABLE,
-                ['id'=>$id])) {
+                ['id' => $id])) {
             return false;
         }
 
         $result = true;
 
         if (! $DB->delete_records(self::TABLE,
-                ['id'=>$jokeofday->id])) {
+                ['id' => $jokeofday->id])) {
             $result = false;
         }
 
