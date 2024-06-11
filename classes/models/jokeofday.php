@@ -84,5 +84,17 @@ class jokeofday {
         return $result;
     }
 
+    /**
+     * Get.
+     *
+     * @param int $instance
+     * @return false|mixed|stdClass
+     * @throws dml_exception
+     */
+    public static function get(int $instance) {
+        global $DB;
+        return $DB->get_record(self::TABLE, ['id' => $instance]);
+    }
+
 }
 

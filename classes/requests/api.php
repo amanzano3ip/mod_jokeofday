@@ -49,13 +49,15 @@ class api {
     /**
      * Get Jokes.
      *
+     * @param int $amount
      * @return array
      */
-    public function get_jokes(): array {
+    public function get_jokes(int $amount): array {
+        global $USER;
         $jokes = [];
         $curl = new curl();
         try {
-            $res = $curl->get($this->url . '/Any?amount=10&type=single');
+            $res = $curl->get($this->url . '/Any?amount=' . $amount . '&type=single&lang=' . $USER->lang);
             $res = json_decode($res);
             if ($res->error === false) {
                 if (isset($res->jokes)) {

@@ -25,5 +25,5 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'mod_jokeofday'; // Full name of the plugin (used for diagnostics).
-$plugin->version  = 2024060400;    // The current module version (Date: YYYYMMDDXX).
+$plugin->version  = 2024061100;    // The current module version (Date: YYYYMMDDXX).
 $plugin->requires = 2024042200;    // Requires this Moodle version.

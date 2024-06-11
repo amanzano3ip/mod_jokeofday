@@ -15,43 +15,37 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Jokeofday module
+ * Services
  *
  * @package    mod_jokeofday
  * @copyright  2024 Tresipunt {@link http://www.tresipunt.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once("../../config.php");
-global $PAGE, $OUTPUT;
+use mod_jokeofday\external\joke_external;
 
+defined('MOODLE_INTERNAL') || die();
 
-$cmid = required_param('id', PARAM_INT);
+$functions = [
 
-list($course, $cm) = get_course_and_cm_from_cmid($cmid);
+        'mod_jokeofday_joke_score' => [
+                'classname' => joke_external::class,
+                'methodname' => 'score',
+                'description' => 'User score a joke',
+                'type' => 'write',
+                'ajax' => true,
+                'loginrequired' => true,
+        ],
 
-/** @var cm_info $cminfo */
-$cminfo = $cm;
+];
 
-require_login($course);
-$contextmodule = context_module::instance($cminfo->id);
-
-$PAGE->set_url(new moodle_url('/mod/jokeofday/view.php'));
-$PAGE->set_context($contextmodule);
-$PAGE->set_title($cminfo->get_name());
-$PAGE->set_heading($cminfo->get_name());
-$PAGE->set_pagelayout('incourse');
-
-echo $OUTPUT->header();
-
-$renderer = $PAGE->get_renderer('mod_jokeofday');
-$page = new \mod_jokeofday\output\view_page($cminfo);
-echo $renderer->render($page);
-
-echo $OUTPUT->footer();
-
-
-
-
-
-
+$services = [
+        'mod_jokeofday' => [
+                'functions' => [
+                        'mod_jokeofday_joke_score',
+                ],
+                'downloadfiles' => 1,
+                'restrictedusers' => 1,
+                'enabled' => 1
+        ]
+];

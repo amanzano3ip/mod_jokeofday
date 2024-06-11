@@ -15,6 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace mod_jokeofday\output;
+use cm_info;
+use dml_exception;
+use mod_jokeofday\models\jokeofday;
 use mod_jokeofday\requests\api;
 use renderable;
 use templatable;
@@ -30,20 +33,31 @@ use stdClass;
  */
 class view_page implements renderable, templatable {
 
+    /** @var cm_info Course Module */
+    protected $cm;
+
+    /**
+     * view_page constructor.
+     *
+     * @param cm_info $cm
+     */
+    public function __construct(cm_info $cm) {
+        $this->cm = $cm;
+    }
+
     /**
      * Export for Template.
      *
      * @param renderer_base $output
      * @return stdClass
+     * @throws dml_exception
      */
-    public function export_for_template(renderer_base $output) {
-
+    public function export_for_template(renderer_base $output): stdClass {
         $data = new stdClass();
-
+        $jokeofday = jokeofday::get($this->cm->instance);
         $api = new api();
-        $data->jokes = $api->get_jokes();
+        $data->jokes = $api->get_jokes($jokeofday->numjokes);
         return $data;
-
     }
 
 
