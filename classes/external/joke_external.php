@@ -24,12 +24,16 @@
 
 namespace mod_jokeofday\external;
 
+use dml_exception;
 use external_api;
 use external_function_parameters;
 use external_multiple_structure;
 use external_single_structure;
 use external_value;
 use invalid_parameter_exception;
+use mod_jokeofday\models\joke;
+use mod_jokeofday\models\score;
+use moodle_exception;
 use stdClass;
 
 global $CFG;
@@ -47,6 +51,7 @@ class joke_external extends external_api {
                 [
                         'jokeid' => new external_value(PARAM_INT, 'Joke ID'),
                         'score' => new external_value(PARAM_INT, 'Score'),
+                        'cmid' => new external_value(PARAM_INT, 'Course Module ID'),
                 ]
         );
     }
@@ -56,31 +61,49 @@ class joke_external extends external_api {
      *
      * @param int $jokeid
      * @param int $score
+     * @param int $cmid
      * @return array
+     * @throws dml_exception
      * @throws invalid_parameter_exception
+     * @throws \moodle_exception
      */
-    public static function score(int $jokeid, int $score): array {
-
+    public static function score(int $jokeid, int $score, int $cmid): array {
+        global $USER;
         $params = self::validate_parameters(
                 self::score_parameters(), [
                         'jokeid' => $jokeid,
-                        'score' => $score
+                        'score' => $score,
+                        'cmid' => $cmid,
                 ]
         );
 
-        //var_dump($params);
+        $error = '';
+
         $data = new stdClass();
         $data->jokeid = $params['jokeid'];
         $data->score = $params['score'];
-        $data->test = 'El servicio ha pasado por aquí';
 
+        list($course, $cm) = get_course_and_cm_from_cmid($params['cmid']);
 
-        // Añadir logica del servicio.
-        // GRabar en base de datos ...
+        $joke = joke::get($params['jokeid']);
+
+        if ($joke) {
+            try {
+                $score = new score($joke->id, $USER->id, $cm, $params['score']);
+                $score->save();
+                $success = true;
+            } catch (moodle_exception $e) {
+                $error = $e->getMessage();
+                $success = false;
+            }
+        } else {
+            $success = false;
+            $error = 'El chiste no se ha encontrado en DB';
+        }
 
         return [
-                'success' => true,
-                'error' => 'Ha ocurrido un error',
+                'success' => $success,
+                'error' => $error,
                 'data' => $data
         ];
 
@@ -100,7 +123,6 @@ class joke_external extends external_api {
                                [
                                        'jokeid' => new external_value(PARAM_INT, 'Joke ID'),
                                        'score' => new external_value(PARAM_INT, 'Score'),
-                                       'test'  => new external_value(PARAM_TEXT, 'Test'),
                                ]
                        ),
                ]

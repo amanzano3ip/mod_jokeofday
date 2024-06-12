@@ -15,34 +15,15 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template mod_jokeofday/view_page
+    @template mod_jokeofday/index_page
 
     Example context (json):
     {
 
     }
 }}
-<div class="container" data-region="mod_jokeofday_view_page">
+<div class="container" data-region="mod_jokeofday_index_page">
 
-    <div class="row">
-
-        {{# multiple }}
-            {{# jokes }}
-                {{> mod_jokeofday/components/joke_single }}
-            {{/ jokes }}
-        {{/ multiple }}
-
-        {{^ multiple }}
-            {{# joke }}
-                {{> mod_jokeofday/components/joke_single }}
-            {{/ joke }}
-            {{^ joke }}
-                <div class="alert alert-warning" role="alert">
-                    No se ha encontrado el chiste
-                </div>
-            {{/ joke }}
-        {{/ multiple }}
-
-    </div>
+    {{{ scoretable }}}
 
 </div>

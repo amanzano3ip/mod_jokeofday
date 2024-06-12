@@ -50,11 +50,13 @@ define([
     /**
      * @param {String} region
      * @param {Integer} id
+     * @param {Integer} cmid
      * @constructor
      */
-    function Joke(region, id) {
+    function Joke(region, id, cmid) {
         this.node = $(region);
         this.id = id;
+        this.cmid = cmid;
         this.node.find(ACTION.SCORE_SELECT).on('change', this.scoreSelectChange.bind(this));
     }
 
@@ -67,7 +69,8 @@ define([
             methodname: SERVICES.SCORE,
             args: {
                 jokeid: this.id,
-                score: value
+                score: value,
+                cmid: this.cmid
             }
         };
 
@@ -92,10 +95,11 @@ define([
         /**
          * @param {String} region
          * @param {Integer} id
+         * @param {Integer} cmid
          * @returns {Joke}
          */
-        initJoke: function(region, id) {
-            return new Joke(region, id);
+        initJoke: function(region, id, cmid) {
+            return new Joke(region, id, cmid);
         }
 
     };

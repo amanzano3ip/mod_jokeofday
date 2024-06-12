@@ -23,14 +23,36 @@
  */
 
 require_once("../../config.php");
-require_once("lib.php");
+global $PAGE, $OUTPUT;
 
-require_login();
 
-$id = required_param('id', PARAM_INT);
+$cmid = required_param('id', PARAM_INT);
 
-$PAGE->set_url('/mod/label/index.php', ['id' => $id]);
+list($course, $cm) = get_course_and_cm_from_cmid($cmid);
 
-redirect("$CFG->wwwroot/course/view.php?id=$id");
+/** @var cm_info $cminfo */
+$cminfo = $cm;
+
+require_login($course);
+$contextmodule = context_module::instance($cminfo->id);
+
+$PAGE->set_url(new moodle_url('/mod/jokeofday/view.php'));
+$PAGE->set_context($contextmodule);
+$PAGE->set_title($cminfo->get_name());
+$PAGE->set_heading($cminfo->get_name());
+$PAGE->set_pagelayout('incourse');
+
+echo $OUTPUT->header();
+
+$renderer = $PAGE->get_renderer('mod_jokeofday');
+$page = new \mod_jokeofday\output\index_page($cminfo);
+echo $renderer->render($page);
+
+echo $OUTPUT->footer();
+
+
+//$PAGE->set_url('/mod/label/index.php', ['id' => $id]);
+
+///redirect("$CFG->wwwroot/course/view.php?id=$id");
 
 

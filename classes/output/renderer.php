@@ -40,4 +40,16 @@ class renderer extends plugin_renderer_base {
         return parent::render_from_template("mod_jokeofday/view_page", $data);
     }
 
+    /**
+     * Render index_page
+     *
+     * @param index_page $page
+     * @return bool|string
+     * @throws moodle_exception
+     */
+    public function render_index_page(index_page $page): bool|string {
+        $data = $page->export_for_template($this);
+        return parent::render_from_template("mod_jokeofday/index_page", $data);
+    }
+
 }

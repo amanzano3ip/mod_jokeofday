@@ -27,7 +27,7 @@
     <div class="card" style="width: 18rem;">
         <div class="card-body">
             <h5 class="card-title">{{ category }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ id }} - {{ type }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">{{ joke_id }} - {{ type }}</h6>
             <p class="card-text">{{ joke }}</p>
             <span class="badge badge-success">{{ lang }}</span>
 
@@ -56,7 +56,7 @@
 {{# js }}
 
   require(['mod_jokeofday/joke'], function(joke) {
-    joke.initJoke('[data-region="mod_jokeofday_joke_single-{{ id }}"]', {{ id }});
+    joke.initJoke('[data-region="mod_jokeofday_joke_single-{{ id }}"]', {{ id }}, {{ cmid }});
   });
 
 {{/ js }}

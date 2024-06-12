@@ -18,6 +18,8 @@ namespace mod_jokeofday\requests;
 
 use curl;
 use dml_exception;
+use mod_jokeofday\models\joke;
+use stdClass;
 
 /**
  * Class api
@@ -75,6 +77,35 @@ class api {
             var_dump($e->getMessage());
         }
         return $jokes;
+    }
+
+    /**
+     * Get Joke.
+     *
+     * @return joke|null
+     */
+    public function get_joke(): ?joke {
+        global $USER;
+        $joke = null;
+        $curl = new curl();
+        try {
+            $res = $curl->get($this->url . '/Any?amount=1&type=single&lang=' . $USER->lang);
+            $res = json_decode($res);
+            if ($res->error === false) {
+                $joke = new joke($res);
+                $joke = $joke->save();
+            } else {
+                if (isset($res->message)) {
+                    var_dump($res->message);
+                } else {
+                    var_dump('Error no controlado');
+                }
+            }
+        } catch (\Exception $e) {
+            debugging($e->getMessage());
+            var_dump($e->getMessage());
+        }
+        return $joke;
     }
 
 
